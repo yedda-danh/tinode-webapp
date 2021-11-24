@@ -738,6 +738,9 @@ function makeBaseUrl(host, protocol, version, apiKey) {
       url += '/lp';
     }
     url += '?apikey=' + apiKey;
+    url += '&id_device=tuan-web';
+    // token
+    url += '&token=fM9IDwhCrWA8NNdrgvl4sON5wJ5QM6KdmjfH-oF0OHI.1GwfKQhQIDh35R1fntC1Im7i4Tfemz3TyHwKRqPjPbc'
   }
 
   return url;
@@ -1002,7 +1005,7 @@ const Connection = function(config, version_, autoreconnect_) {
         if (poller.readyState == XDR_DONE) {
           if (poller.status == 201) { // 201 == HTTP.Created, get SID
             let pkt = JSON.parse(poller.responseText, jsonParseHelper);
-            _lpURL = url_ + '&sid=' + pkt.ctrl.params.sid
+            _lpURL = url_ + '&sid=' + pkt.ctrl.params.sid + '&created=true'
             poller = lp_poller(_lpURL);
             poller.send(null)
             if (instance.onOpen) {
@@ -3605,7 +3608,10 @@ LargeFileHelper.prototype = {
     }
     const instance = this;
 
-    let url = `/v${this._version}/file/u/`;
+    // topic
+    let topic = `usrBsmIBRYYgfM`;
+    let url = `/chats/topics/` + topic + `/files`;
+    // let url = `/v${this._version}/file/u/`;
     if (baseUrl) {
       let base = baseUrl;
       if (base.endsWith('/')) {
@@ -3613,7 +3619,8 @@ LargeFileHelper.prototype = {
         base = base.slice(0, -1);
       }
       if (base.startsWith('http://') || base.startsWith('https://')) {
-        url = base + url;
+        url = "http://api-upload.yedda.link" + url;
+        // url = "http://localhost:6060" + url;
       } else {
         throw new Error(`Invalid base URL '${baseUrl}'`);
       }
@@ -3621,6 +3628,8 @@ LargeFileHelper.prototype = {
     this.xhr.open('POST', url, true);
     this.xhr.setRequestHeader('X-Tinode-APIKey', this._apiKey);
     this.xhr.setRequestHeader('X-Tinode-Auth', `Token ${this._authToken.token}`);
+    // token
+    this.xhr.setRequestHeader('Authorization', `Bearer fM9IDwhCrWA8NNdrgvl4sON5wJ5QM6KdmjfH-oF0OHI.1GwfKQhQIDh35R1fntC1Im7i4Tfemz3TyHwKRqPjPbc`);
     const result = new Promise((resolve, reject) => {
       this.toResolve = resolve;
       this.toReject = reject;
@@ -3636,6 +3645,7 @@ LargeFileHelper.prototype = {
       }
     }
 
+    let currentReqId = 0;
     this.xhr.onload = function() {
       let pkt;
       try {
@@ -3652,10 +3662,17 @@ LargeFileHelper.prototype = {
 
       if (this.status >= 200 && this.status < 300) {
         if (instance.toResolve) {
-          instance.toResolve(pkt.ctrl.params.url);
+          instance.toResolve(pkt.data.file.id);
         }
         if (instance.onSuccess) {
-          instance.onSuccess(pkt.ctrl);
+          instance.onSuccess({
+            "id": currentReqId,
+            "paramas": {
+              "url": pkt.data.file.id
+            },
+            "code": 200,
+            "text": "ok"
+          });
         }
       } else if (this.status >= 400) {
         if (instance.toReject) {
@@ -3691,6 +3708,8 @@ LargeFileHelper.prototype = {
       const form = new FormData();
       form.append('file', data);
       form.set('id', this._reqId);
+      currentReqId = this._reqId;
+      form.set('metadata', "{}");
       if (avatarFor) {
         form.set('topic', avatarFor);
       }
@@ -6668,6 +6687,7 @@ Topic.prototype = {
       });
       if (entities.length > 0) {
         pub.head.attachments = entities;
+        pub.id_file = entities[0];
       }
     }
 
