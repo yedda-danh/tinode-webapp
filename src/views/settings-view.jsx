@@ -9,7 +9,7 @@ export default class SettingsView extends React.PureComponent {
     super(props);
 
     this.state = {
-      transport: props.transport || 'def',
+      transport: props.transport || 'lp',
       serverAddress: props.serverAddress,
     };
 
@@ -37,7 +37,7 @@ export default class SettingsView extends React.PureComponent {
   render() {
     const names = {def: "default", ws: "websocket", lp: "long polling"};
     const transportOptions = [];
-    ['def', 'ws', 'lp'].map((item) => {
+    ['lp'].map((item) => {
       const id = 'transport-' + item;
       const name = names[item];
       transportOptions.push(

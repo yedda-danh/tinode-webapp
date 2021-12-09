@@ -449,18 +449,20 @@ class TinodeWeb extends React.Component {
   }
 
   // User clicked Login button in the side panel.
-  handleLoginRequest(login, password) {
+  handleLoginRequest(login, password, token, id_device) {
     this.setState({
       loginDisabled: true,
       login: login,
       password: password,
+      token: token,
+      id_device: id_device,
       loadSpinnerVisible: true,
       autoLogin: true
     });
     this.handleError('', null);
 
     if (this.tinode.isConnected()) {
-      this.doLogin(login, password, {meth: this.state.credMethod, resp: this.state.credCode});
+      this.doLogin(login, password, token, id_device, {meth: this.state.credMethod, resp: this.state.credCode});
     } else {
       this.tinode.connect().catch((err) => {
         // Socket error
@@ -497,7 +499,7 @@ class TinodeWeb extends React.Component {
     });
 
     if (this.state.autoLogin) {
-      this.doLogin(this.state.login, this.state.password, {meth: this.state.credMethod, resp: this.state.credCode});
+      this.doLogin(this.state.login, this.state.password, this.state.token, this.state.id_device, {meth: this.state.credMethod, resp: this.state.credCode});
     }
   }
 
@@ -554,8 +556,8 @@ class TinodeWeb extends React.Component {
     });
   }
 
-  doLogin(login, password, cred) {
-    if (this.tinode.isAuthenticated()) {
+  doLogin(login, password, access_token, id_device, cred) {
+      if (this.tinode.isAuthenticated()) {
       // Already logged in. Go to default screen.
       HashNavigation.navigateTo('');
       return;
@@ -568,8 +570,17 @@ class TinodeWeb extends React.Component {
     if (login && password) {
       this.setState({password: null});
       promise = this.tinode.loginBasic(login, password, cred);
+
+      //token from login
+      localStorage.setItem('access_token', access_token);
+      localStorage.setItem('id_device', id_device);
+      
     } else if (token) {
       promise = this.tinode.loginToken(token.token, cred);
+
+      //token from login
+      localStorage.setItem('access_token', access_token);
+      localStorage.setItem('id_device', id_device);
     }
 
     if (promise) {
@@ -595,6 +606,10 @@ class TinodeWeb extends React.Component {
         this.handleError(err.message, 'err');
         localStorage.removeItem('auth-token');
         HashNavigation.navigateTo('');
+
+        //token from login
+      localStorage.setItem('access_token', null);
+      localStorage.setItem('id_device', null);
       });
     } else {
       // No login credentials provided.
@@ -1490,7 +1505,7 @@ class TinodeWeb extends React.Component {
         });
     } else {
       this.setState({credMethod: cred, credCode: code});
-      this.doLogin(null, null, {meth: cred, resp: code});
+      this.doLogin(null, null, null, null, {meth: cred, resp: code});
     }
   }
 
