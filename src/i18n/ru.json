@@ -178,5 +178,7 @@
   "drafty_image": "Картинка",
   "topic_delete": "Удалить чат",
   "password_reset_email_sent": "Сообщение было отправлено на адрес {email}. Следуйте инструкциям в сообщении, чтобы изменить пароль.",
-  "menu_item_restore_topic": "Восстановить"
+  "menu_item_restore_topic": "Восстановить",
+  "id_device_prompt": ":!![MISSING]!!:[object Object]",
+  "token_prompt": ":!![MISSING]!!:[object Object]"
 }

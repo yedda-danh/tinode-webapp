@@ -178,5 +178,7 @@
   "drafty_image": "Bild",
   "topic_delete": "Chat löschen",
   "password_reset_email_sent": "Eine E-Mail wurde an {email} gesendet. Folgen Sie den Anweisungen in der E-Mail, um Ihr Passwort zurückzusetzen.",
-  "menu_item_restore_topic": "Wiederherstellen"
+  "menu_item_restore_topic": "Wiederherstellen",
+  "id_device_prompt": ":!![MISSING]!!:[object Object]",
+  "token_prompt": ":!![MISSING]!!:[object Object]"
 }

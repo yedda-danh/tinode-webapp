@@ -231,6 +231,10 @@
     "defaultMessage": "Group or User ID",
     "description": "Prompt for entering user or group ID"
   },
+  "id_device_prompt": {
+    "defaultMessage": "ID Device",
+    "description": "Placeholer for id_device"
+  },
   "image_caption_prompt": {
     "defaultMessage": "Image caption",
     "description": "Prompt in SendMessage for attached image"
@@ -680,6 +684,10 @@
   "title_tag_manager": {
     "defaultMessage": "Tags (user discovery)",
     "description": "Section title for TagManager"
+  },
+  "token_prompt": {
+    "defaultMessage": "Token",
+    "description": "Placeholer for token"
   },
   "topic_block_warning": {
     "defaultMessage": "Are you sure you want to block this conversation?",

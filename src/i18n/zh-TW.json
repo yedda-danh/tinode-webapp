@@ -178,5 +178,7 @@
   "validate_credential_action": "確認",
   "topic_delete": "刪除聊天",
   "password_reset_email_sent": "一封電子郵件已發送至 {email}。按照電子郵件中的說明重置密碼。",
-  "menu_item_restore_topic": "恢復"
+  "menu_item_restore_topic": "恢復",
+  "id_device_prompt": ":!![MISSING]!!:[object Object]",
+  "token_prompt": ":!![MISSING]!!:[object Object]"
 }

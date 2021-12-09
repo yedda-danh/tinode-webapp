@@ -855,7 +855,7 @@
         }
   
         return new Promise(function(resolve, reject) {
-          const url = makeBaseUrl(host, secure ? 'wss' : 'ws', version, apiKey);
+          const url = makeBaseUrl(host, 'wss', version, apiKey);
   
           log("Connecting to: ", url);
   
@@ -1074,7 +1074,7 @@
         }
   
         return new Promise(function(resolve, reject) {
-          const url = makeBaseUrl(host, secure ? 'https' : 'http', version, apiKey);
+          const url = makeBaseUrl(host, 'https', version, apiKey);
           log("Connecting to:", url);
           _poller = lp_poller(url, resolve, reject);
           _poller.send(null)

@@ -47,7 +47,7 @@ const APP_NAME = 'TinodeWeb/' + (_version_js__WEBPACK_IMPORTED_MODULE_0__.PACKAG
 const API_KEY = 'AQEAAAABAAD_rAp4DJh05a1HAwFT3A6K';
 const KNOWN_HOSTS = {
   hosted: 'web.tinode.co',
-  local: 'localhost:6060'
+  local: 'api-chat-gateway.yedda.link'
 };
 const DEFAULT_HOST = KNOWN_HOSTS.hosted;
 const LOGGING_ENABLED = true;
