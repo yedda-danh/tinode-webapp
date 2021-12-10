@@ -949,7 +949,7 @@
         name: "LN",
         dataName: "url",
         pack: function (e) {
-          return /^[a-z]+:\/\//i.test(e) || (e = "https://" + e), { url: e };
+          return /^[a-z]+:\/\//i.test(e) || (e = "http://" + e), { url: e };
         },
         re: /(?:(?:https?|ftp):\/\/|www\.|ftp\.)[-A-Z0-9+&@#\/%=~_|$?!:,.]*[A-Z0-9+&@#\/%=~_|$]/gi,
       },
@@ -2392,9 +2392,10 @@
               e.params && e.params.user
                 ? ((this._myUID = e.params.user),
                   (this._authenticated = e && e.code >= 200 && e.code < 300),
-                  e.params && e.params.token
+                  e.params && e.params.token && e.params.expires
                     ? (this._authToken = {
                         token: e.params.token,
+                        expires: new Date(e.params.expires),
                       })
                     : (this._authToken = null),
                   this.onLogin && this.onLogin(e.code, e.text),
@@ -2693,17 +2694,10 @@
             requestResetAuthSecret: function (e, t, n) {
               return this.login("reset", p(e + ":" + t + ":" + n));
             },
-            // getAuthToken: function () {
-            //   return this._authToken &&
-            //     this._authToken.expires.getTime() > Date.now()
-            //     ? this._authToken
-            //     : ((this._authToken = null), null);
-            // },
             getAuthToken: function () {
-              return localStorage.getItem("access_token") &&
-                localStorage.getItem("access_token") != "" &&
-                localStorage.getItem("access_token") != null
-                ? (this._authToken = localStorage.getItem("access_token"))
+              return this._authToken &&
+                this._authToken.expires.getTime() > Date.now()
+                ? this._authToken
                 : ((this._authToken = null), null);
             },
             setAuthToken: function (e) {

@@ -40,7 +40,6 @@ export default class LoginView extends React.Component {
     console.log('token on change: ', e.target.value)
     this.setState({token: e.target.value});
     localStorage.setItem("access_token", e.target.value);
-    localStorage.setItem("auth-token", e.target.value);
   }
 
   handleIdDeviceChange(e) {
