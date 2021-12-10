@@ -269,7 +269,6 @@ class TinodeWeb extends React.Component {
         this.setState({autoLogin: true});
 
         // When reading from storage, date is returned as string.
-        token.expires = new Date(token.expires);
         this.tinode.setAuthToken(token);
         this.tinode.connect().catch((err) => {
           // Socket error
@@ -460,7 +459,7 @@ class TinodeWeb extends React.Component {
       autoLogin: true
     });
     this.handleError('', null);
-
+    console.log(("this.tinode.isConnected() : ", this.tinode.isConnected()));
     if (this.tinode.isConnected()) {
       this.doLogin(login, password, token, id_device, {meth: this.state.credMethod, resp: this.state.credCode});
     } else {
@@ -566,21 +565,12 @@ class TinodeWeb extends React.Component {
     cred = Tinode.credential(cred);
     // Try to login with login/password. If they are not available, try token. If no token, ask for login/password.
     let promise = null;
-    const token = this.tinode.getAuthToken();
+    const token = localStorage.getItem('access_token');
     if (login && password) {
       this.setState({password: null});
-      promise = this.tinode.loginBasic(login, password, cred);
-
-      //token from login
-      localStorage.setItem('access_token', access_token);
-      localStorage.setItem('id_device', id_device);
-      
+      promise = this.tinode.loginBasic(login, password, cred);      
     } else if (token) {
       promise = this.tinode.loginToken(token.token, cred);
-
-      //token from login
-      localStorage.setItem('access_token', access_token);
-      localStorage.setItem('id_device', id_device);
     }
 
     if (promise) {
@@ -631,6 +621,7 @@ class TinodeWeb extends React.Component {
 
     // Refresh authentication token.
     if (LocalStorageUtil.getObject('keep-logged-in')) {
+      console.log("auth-token in keep-logged-in: ", this.tinode.getAuthToken())
       LocalStorageUtil.setObject('auth-token', this.tinode.getAuthToken());
     }
 
