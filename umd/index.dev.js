@@ -4702,6 +4702,7 @@
               token: e.target.value,
             });
             localStorage.setItem("access_token", e.target.value);
+            localStorage.setItem("auth-token", e.target.value);
           }
 
           handleIdDeviceChange(e) {
