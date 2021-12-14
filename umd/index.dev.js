@@ -8666,10 +8666,12 @@
                 password: null,
               });
               promise = this.tinode.loginBasic(login, password, cred);
-              localStorage.setItem("access_token", access_token);
-              localStorage.setItem("id_device", id_device);
             } else if (token) {
               promise = this.tinode.loginToken(token.token, cred);
+            }
+
+            if (access_token && id_device) {
+              //token from login
               localStorage.setItem("access_token", access_token);
               localStorage.setItem("id_device", id_device);
             }
