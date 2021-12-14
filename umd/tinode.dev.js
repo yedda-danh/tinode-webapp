@@ -1105,7 +1105,7 @@
                   `Bearer ${localStorage.getItem("access_token")}`
                 );
                 sender.setRequestHeader(
-                  "id_device",
+                  "x-id-device",
                   `${localStorage.getItem("id_device")}`
                 );
                 return sender;
@@ -1184,7 +1184,7 @@
                   `Bearer ${localStorage.getItem("access_token")}`
                 );
                 poller.setRequestHeader(
-                  "id_device",
+                  "x-id-device",
                   `${localStorage.getItem("id_device")}`
                 );
                 return poller;
@@ -3992,7 +3992,7 @@
                   base = base.slice(0, -1);
                 }
                 if (base.startsWith("http://") || base.startsWith("https://")) {
-                  url = "http://api-upload.yedda.link" + url;
+                  url = "https://api-upload.yedda.link" + url;
                   // url = "http://localhost:6060" + url;
                 } else {
                   throw new Error(`Invalid base URL '${baseUrl}'`);
@@ -4011,7 +4011,7 @@
                 `Bearer ${localStorage.getItem("access_token")}`
               );
               this.xhr.setRequestHeader(
-                "id_device",
+                "x-id-device",
                 `${localStorage.getItem("id_device")}`
               );
               const result = new Promise((resolve, reject) => {
@@ -4139,9 +4139,7 @@
               onSuccess,
               onFailure
             ) {
-              const baseUrl =
-                ("https://") +
-                this._tinode._host;
+              const baseUrl = "https://" + this._tinode._host;
               return this.uploadWithBaseUrl(
                 baseUrl,
                 data,
@@ -5309,6 +5307,7 @@
                     })
                     .then(() => {
                       // Now wait for all messages to finish loading.
+
                       return Promise.all(prom);
                     })
                     .then(() => {
